@@ -26,7 +26,7 @@ export default function Home() {
     </div>
     <div className="flex justify-center mt-12">
       <button className="bg-white text-black px-4 py-2 font-bold">
-        <a href="/register">Get Started</a>
+        <a href="/Events">Get Started</a>
       </button>
     </div>
     </>
