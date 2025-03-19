@@ -5,6 +5,7 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import backarrow from '@/public/backarrow.svg';
 import qrscanner from '@/public/qrscanner.svg';
 import CsvUploader from '@/components/CsvUploader';
+import Papa from 'papaparse';
 import { FolderOpen, Mail, QrCode, Upload } from "lucide-react";
 
 function Page() {
@@ -108,7 +109,7 @@ function Page() {
 
           {showScanner && <div id="reader" className="mt-6"></div>}
 
-          {scanResult && <p className="mt-4 text-green-500 text-center font-semibold">Scanned QR: {scanResult}</p>}
+          {scanResult && <p className="mt-4 p-4 mb-4 bg-white rounded-xl text-emerald-950/70 text-center font-semibold">Scanned QR: {scanResult}</p>}
         </div>
       )}
     </div>

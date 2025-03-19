@@ -21,12 +21,12 @@ const QRScanner = ({ onScanSuccess }) => {
     );
 
     return () => scanner.clear();
-  }, []);
+    }, []);
 
   return (
     <div className="flex flex-col items-center">
       <div id="reader"></div>
-      {scanResult && <p className="mt-4 text-green-500">Scanned: {scanResult}</p>}
+      {scanResult && <p className="mt-4 text-emerald-950/70">Scanned: {scanResult}</p>}
     </div>
   );
 };
