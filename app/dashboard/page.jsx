@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image';
 import backarrow from '@/public/backarrow.svg'
-import { Plus, FolderOpen, Mail, QrCode, Upload } from "lucide-react";
+import { FolderOpen, Mail, QrCode, Upload } from "lucide-react";
 
 function Page() {
   const [view, setView] = useState("dashboard");
@@ -28,7 +28,7 @@ function Page() {
           <div className='main-div flex items-center justify-center gap-4'>
             <div className='section-1 bg-emerald-950/70 w-1/3 h-48 p-4 m-4 rounded-lg'>
               <button onClick={() => setView("generateQR")} className='h-3/4 rounded px-4 py-2 w-full text-white bg-white/10'>
-                <h1 className='font-bold text-2xl'>Generate <br />QR</h1>
+               <h1 className='font-bold text-2xl'>Generate <br />QR</h1>
               </button>
             </div>
             <div className='section-1 bg-emerald-950/70 w-1/3 h-48 p-4 m-4 rounded-lg'>

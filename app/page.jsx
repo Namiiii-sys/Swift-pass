@@ -2,8 +2,14 @@
 import React from "react";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 import { UserCircle } from "lucide-react"; // Importing an icon
+import { Sendmail } from "@/server/mail";
 
 export default function Home() {
+  async function mail() {
+    await Sendmail()
+  }
+
+  
   return (
     <>
       <div>
@@ -12,6 +18,9 @@ export default function Home() {
           <div className="flex justify-between gap-6 text-white">
             <a href="/events">Events</a>
             <a href="/contact">Contact</a>
+            <button onClick={mail}>
+              mail
+            </button>
           </div>
 
          {/* authetication */}
