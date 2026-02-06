@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { getUsers } from '@/server/actions';
 
 const ParticipantsTable = () => {
   const [participants, setParticipants] = useState([]);
@@ -8,9 +9,14 @@ const ParticipantsTable = () => {
   useEffect(() => {
     const getusers = async () => {
       try {
-        const response = await fetch('/api/get-users'); // 
-        const data = await response.json();
-        setParticipants(data); 
+        // const response = await fetch('/api/get-users'); // 
+        // const data = await response.json();
+        const result = await getUsers();
+        if (result.success) {
+          setParticipants(result.data);
+        } else {
+          console.error(result.error);
+        }
       } catch (error) {
         console.error('Error fetching participants:', error);
       }

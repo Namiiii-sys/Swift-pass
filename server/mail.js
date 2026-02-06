@@ -26,6 +26,8 @@ export async function Sendmail() {
 
     // const qrData = `SwiftPass:${person.id}:${person.email}`
     // const qrImage = await QRCode.toDataURL(qrData)
+    // Use stored QR or fallback (though saveUser should guarantee it)
+    const qrImage = person.qrcode;
 
     const mailoptions = {
       from: 'Namita@donation.vinucode.in',
@@ -34,7 +36,7 @@ export async function Sendmail() {
       html: `
         <p>Hi ${person.name},</p>
         <p>Here's your QR code for event check-in:</p>
-        // <img src="${qrImage}" alt="QR Code" />
+        <img src="${qrImage}" alt="QR Code" />
         <p>See you there!</p>
       `
     }

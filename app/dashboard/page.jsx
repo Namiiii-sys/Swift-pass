@@ -6,7 +6,9 @@ import backarrow from '@/public/backarrow.svg';
 import qrscanner from '@/public/qrscanner.svg';
 import CsvUploader from '@/components/CsvUploader';
 import { FolderOpen, Mail, QrCode, Upload } from "lucide-react";
-import { Sendmail } from '@/server/mail';
+import { Sendmail } from '@/server/mail'; // Keep this if used elsewhere, but we use action now? 
+// Actually mail() function in dashboard used /api/send-batch.
+import { sendBatchMail } from '@/server/actions';
 
 function Page() {
   const [view, setView] = useState("dashboard");
@@ -37,21 +39,22 @@ function Page() {
   }, [showScanner]);
 
   async function mail() {
-  try {
-    const res = await fetch("/api/send-batch", {
-      method: "POST",
-    });
+    try {
+      // const res = await fetch("/api/send-batch", {
+      //   method: "POST",
+      // });
 
-    const data = await res.json();
-    if (data.success) {
-      alert("Emails sent successfully!");
-    } else {
-      alert("Error sending emails: " + data.error);
+      // const data = await res.json();
+      const data = await sendBatchMail();
+      if (data.success) {
+        alert("Emails sent successfully!");
+      } else {
+        alert("Error sending emails: " + data.error);
+      }
+    } catch (err) {
+      console.error("Failed to send mails:", err);
     }
-  } catch (err) {
-    console.error("Failed to send mails:", err);
   }
-}
 
   return (
     <div>
@@ -81,7 +84,7 @@ function Page() {
               <Image src={backarrow} alt="back-arrow" className='h-8 w-8' />
             </button>
             <h2 className="text-xl font-bold text-white">Menu</h2>
-            <button 
+            <button
               className="flex items-center gap-2 text-white hover:text-emerald-200"
               onClick={() => setShowUpload(!showUpload)}
             >
@@ -90,27 +93,28 @@ function Page() {
             <button className="flex items-center gap-2 text-white hover:text-emerald-200">
               <FolderOpen /> View Files
             </button>
-           
+
           </div>
 
           {/* Main Content */}
           <div className="flex-1 p-8">
             <h1 className="text-2xl font-bold mb-4">Files Management</h1>
             <button
-  onClick={async () => {
-    const res = await fetch('/api/send-batch', { method: 'POST' });
-    const data = await res.json();
-    if (data.success) {
-      alert("Emails sent successfully!");
-      console.log(data)
-    } else {
-      alert("Something went wrong: " + data.error);
-    }
-  }}
-  className="bg-emerald-950/70 text-white px-4 py-2 rounded"
->
-  Send Emails to Participants
-</button>
+              onClick={async () => {
+                // const res = await fetch('/api/send-batch', { method: 'POST' });
+                // const data = await res.json();
+                const data = await sendBatchMail();
+                if (data.success) {
+                  alert("Emails sent successfully!");
+                  console.log(data)
+                } else {
+                  alert("Something went wrong: " + data.error);
+                }
+              }}
+              className="bg-emerald-950/70 text-white px-4 py-2 rounded"
+            >
+              Send Emails to Participants
+            </button>
 
             {showUpload && <CsvUploader />}
           </div>
@@ -124,7 +128,7 @@ function Page() {
           </button>
           <div className='flex justify-between items-center'>
             <div className='flex flex-col gap-6 m-4'>
-              
+
               <button onClick={() => setShowScanner(true)} className='bg-white px-4 py-2 font-semibold rounded-md'>
                 Verify QR
               </button>

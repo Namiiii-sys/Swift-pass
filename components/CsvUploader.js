@@ -1,6 +1,6 @@
-'use client'
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import { saveUser } from '@/server/actions';
 
 const CsvUploader = () => {
   const [csvData, setCsvData] = useState([]);
@@ -27,24 +27,34 @@ const CsvUploader = () => {
 
     setLoading(true);
     try {
-      
+
       for (const row of csvData) {
-  if (!row.name || !row.email) {
-    console.warn("Skipping invalid row:", row);
-    continue; // ⛔ Skip rows with missing data
-          
+        // Normalize keys to find name and email regardless of case
+        const keys = Object.keys(row);
+        const nameKey = keys.find(k => k.toLowerCase().trim() === 'name');
+        const emailKey = keys.find(k => k.toLowerCase().trim() === 'email');
 
-  }
+        const name = nameKey ? row[nameKey] : null;
+        const email = emailKey ? row[emailKey] : null;
 
-  await fetch('/api/save-users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      name: row.name,
-      email: row.email,
-    }),
-  });
-}
+        if (!name || !email) {
+          console.warn("Skipping invalid row (missing name/email):", row);
+          continue; // ⛔ Skip rows with missing data
+        }
+
+        // await fetch('/api/save-users', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({
+        //     name: row.name,
+        //     email: row.email,
+        //   }),
+        // });
+        const result = await saveUser({ name, email });
+        if (!result.success) {
+          console.error("Failed to save:", row, result.error);
+        }
+      }
 
       alert("Data stored in database!");
       console.log("Parsed CSV Data:", csvData);

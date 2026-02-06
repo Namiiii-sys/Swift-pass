@@ -17,5 +17,6 @@ model Participant {
   id        Int     @id @default(autoincrement())
   name      String
   email     String  @unique
+  qrcode    String? // Base64 string of QR code
   createdAt DateTime @default(now())
 }
